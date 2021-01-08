@@ -51,6 +51,16 @@ func (c *httpClient) get(url string, header map[string]string) (body []byte, sta
 	return
 }
 
+func (c *httpClient) Proxy(proxy string, header http.Header) (resp *http.Response, err error) {
+	req, err := http.NewRequest(http.MethodGet, proxy, nil)
+	req.Header = header
+	// referer
+	if err == nil {
+		resp, err = c.client.Do(req)
+	}
+	return
+}
+
 func (c *httpClient) delete(url string) (statusCode int, err error) {
 	req, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {

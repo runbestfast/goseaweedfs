@@ -88,6 +88,12 @@ func (f *Filer) Get(path string, args url.Values, header map[string]string) (dat
 	return
 }
 
+// handle http range
+func (f *Filer) Proxy(path string, args url.Values, header http.Header) (resp *http.Response, err error) {
+	resp, err = f.client.Proxy(encodeURI(*f.base, path, args), header)
+	return
+}
+
 // Download a file.
 func (f *Filer) Download(path string, args url.Values, callback func(io.Reader) error) (err error) {
 	_, err = f.client.download(encodeURI(*f.base, path, args), callback)
